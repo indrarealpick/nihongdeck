@@ -387,12 +387,40 @@ input,select,textarea{font-family:inherit}
   <section id="screen-dictionary" class="screen">
     <div class="topbar"><h1>Kamus</h1><div class="spacer"></div><span class="tag" id="dict-count">Kamus</span></div>
     <div class="page">
+      <div class="section-title">Deck Belajar Bawaan</div>
+      <div class="list" id="deck-cards"></div>
+      <div class="section-title">Cari Kata</div>
       <div class="toolbar"><input class="input jp" id="dict-search" type="search" placeholder="🔍 Cari: 食べる / たべる / makan…" /></div>
       <div class="toolbar">
         <select class="select" id="dict-level"><option value="">Semua Level</option><option value="N5">N5</option><option value="N4">N4</option></select>
       </div>
       <div class="list" id="dict-list"></div>
       <button class="btn btn-ghost load-more hidden" id="dict-more">Muat lebih banyak</button>
+    </div>
+  </section>
+
+  <!-- DECK STUDY (built-in N5/N4) -->
+  <section id="screen-deck" class="screen">
+    <div class="topbar"><button class="btn btn-icon btn-ghost" data-nav="dictionary">←</button><h1 id="deck-title">Belajar</h1><div class="spacer"></div><span class="tag" id="deck-counter">0 / 0</span></div>
+    <div class="page">
+      <div class="study-wrap" id="deck-wrap">
+        <div class="study-progress" id="deck-progress-txt">Progress 0%</div>
+        <div class="flip" id="dflip"><div class="flip-inner">
+          <div class="flip-face flip-front">
+            <button class="speak-btn" id="deck-speak-f">🔊</button>
+            <div class="kanji" id="deck-kanji">—</div><div class="flip-hint">Ketuk untuk membalik</div>
+          </div>
+          <div class="flip-face flip-back">
+            <button class="speak-btn" id="deck-speak-b">🔊</button>
+            <div class="rd-lbl">Cara Baca</div><div class="reading" id="deck-reading">—</div>
+            <div class="mn-lbl">Arti</div><div class="meaning" id="deck-meaning">—</div><div class="flip-hint">Ketuk untuk membalik</div>
+          </div>
+        </div></div>
+        <div class="study-actions"><button class="btn btn-accent" id="deck-known">✓ Sudah Hafal</button></div>
+        <div class="study-nav"><button class="btn btn-ghost" id="deck-prev">← Sebelumnya</button><button class="btn btn-ghost" id="deck-next">Berikutnya →</button></div>
+        <div class="study-nav"><button class="btn btn-secondary" id="deck-shuffle">🔀 Acak</button></div>
+      </div>
+      <div class="empty hidden" id="deck-empty"><span class="em">📚</span>Belum ada kata di deck ini.</div>
     </div>
   </section>
 
@@ -426,6 +454,10 @@ input,select,textarea{font-family:inherit}
       <div class="set-item nb">
         <div class="grow"><div class="t">Auto Play Audio</div><div class="d">Putar otomatis saat kartu dibalik</div></div>
         <label class="switch"><input type="checkbox" id="set-autoplay"/><span class="track"><span class="knob"></span></span></label>
+      </div>
+      <div class="set-item nb">
+        <div class="grow"><div class="t">Voice Jepang</div><div class="d">Pilih suara untuk audio</div></div>
+        <select class="select" id="set-voice" style="width:auto;max-width:55%"><option>Default</option></select>
       </div>
       <div class="section-title">Data</div>
       <div class="set-list">
@@ -477,6 +509,7 @@ const State = {
   review:{ list:[], idx:0, shown:false },
   fcLimit:60,
   dictLimit:50, dictResults:[],
+  deck:{ level:'N5', list:[], idx:0, flipped:false },
   autoplay: localStorage.getItem('nf_autoplay')==='1'
 };
 
@@ -522,14 +555,42 @@ function toRomaji(input){
 /* ---------- AUDIO (Web Speech API) ---------- */
 const Speech = {
   ok: ('speechSynthesis' in window),
-  voice: null,
-  init(){ if(!this.ok) return; const pick=()=>{ const vs=speechSynthesis.getVoices(); this.voice = vs.find(v=>v.lang==='ja-JP') || vs.find(v=>v.lang&&v.lang.startsWith('ja')) || null; }; pick(); speechSynthesis.onvoiceschanged=pick; },
+  voices: [], voice: null,
+  // Prioritas voice Jepang berkualitas (urutan dari terbaik)
+  PRIORITY: [/google.*日本語/i, /google.*japanese/i, /haruka/i, /kyoko/i, /o-ren|otoya/i, /ja[-_]?jp/i, /^ja\b/i],
+  init(){
+    if(!this.ok) return;
+    const load=()=>{
+      this.voices = speechSynthesis.getVoices().filter(v => (v.lang||'').toLowerCase().startsWith('ja'));
+      this.pickDefault(); populateVoicePicker();
+    };
+    load(); speechSynthesis.onvoiceschanged = load;
+  },
+  pickDefault(){
+    const saved = localStorage.getItem('nf_voice');
+    if(saved){ const v=this.voices.find(x=>(x.voiceURI===saved)||(x.name===saved)); if(v){ this.voice=v; return; } }
+    for(const re of this.PRIORITY){ const v=this.voices.find(x=>re.test(x.name)||re.test(x.lang)); if(v){ this.voice=v; return; } }
+    this.voice = this.voices[0] || null;
+  },
+  setVoice(key){
+    const v=this.voices.find(x=>(x.voiceURI===key)||(x.name===key));
+    if(v){ this.voice=v; localStorage.setItem('nf_voice', v.voiceURI||v.name); }
+    else { localStorage.removeItem('nf_voice'); this.pickDefault(); }
+  },
   speak(text){
     if(!this.ok){ toast('Voice Jepang tidak tersedia','warning'); return; }
     try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang='ja-JP'; if(this.voice)u.voice=this.voice; u.rate=.9; speechSynthesis.speak(u); }
     catch(e){ toast('Voice Jepang tidak tersedia','warning'); }
   }
 };
+function populateVoicePicker(){
+  const sel=document.getElementById('set-voice'); if(!sel) return;
+  if(!Speech.voices.length){ sel.innerHTML='<option>Tidak ada voice Jepang</option>'; return; }
+  const cur=(Speech.voice&&(Speech.voice.voiceURI||Speech.voice.name))||'';
+  sel.innerHTML='<option value="">Otomatis (terbaik)</option>'+Speech.voices.map(v=>{
+    const key=v.voiceURI||v.name; return `<option value="${key.replace(/"/g,'')}" ${key===cur?'selected':''}>${v.name}</option>`;
+  }).join('');
+}
 
 /* ---------- TOAST / MODAL / OVERLAY ---------- */
 function toast(msg,type='info',ms=2600){
@@ -984,6 +1045,60 @@ async function addDictToFlashcard(d){
   if(ok){ toast('Ditambahkan ke flashcard 🎉','success'); refreshAll(); }
 }
 
+/* ============================ BUILT-IN DECK (N5/N4) ============================ */
+function deckKnownSet(level){
+  try{ return new Set(JSON.parse(localStorage.getItem('nf_deck_'+level)||'[]')); }catch(e){ return new Set(); }
+}
+function deckSaveKnown(level,set){ localStorage.setItem('nf_deck_'+level, JSON.stringify([...set])); }
+async function renderDeckCards(){
+  const wrap=$('#deck-cards'); if(!wrap) return;
+  wrap.innerHTML=`<div class="empty"><span class="em">⏳</span>Memuat…</div>`;
+  async function levelCard(level,color){
+    const {count}=await sb.from('dictionary').select('id',{count:'exact',head:true}).eq('jlpt_level',level);
+    const total=count||0; const known=Math.min(deckKnownSet(level).size,total); const pct=total?Math.round(known/total*100):0;
+    return `<div class="row-card nb" style="background:${color}"><div class="grow">
+      <div class="title">📚 Belajar ${level}</div>
+      <div class="sub">${total} kartu · ${known} hafal</div>
+      <div class="mini-bar"><div class="mini-fill" style="width:${pct}%"></div></div>
+      <div style="font-size:12px;font-weight:800;margin-top:5px">${pct}%</div></div>
+      <button class="btn btn-sm" data-deck="${level}">Mulai</button></div>`;
+  }
+  const n5=await levelCard('N5','#fff'); const n4=await levelCard('N4','#fff');
+  wrap.innerHTML=n5+n4;
+  $$('[data-deck]',wrap).forEach(b=>b.onclick=()=>openDeck(b.dataset.deck));
+}
+async function openDeck(level){
+  overlay(`Memuat deck ${level}…`);
+  const {data,error}=await sb.from('dictionary').select('id,kanji,reading,meaning').eq('jlpt_level',level).order('created_at',{ascending:true}).limit(2000);
+  overlayOff();
+  if(error){ toast('Gagal memuat deck','error'); return; }
+  State.deck={ level, list:data||[], idx:0, flipped:false };
+  $('#deck-title').textContent=`Belajar ${level}`;
+  goto('deck');
+}
+function renderDeck(){
+  const {list,idx,level}=State.deck; const empty=$('#deck-empty'),wrap=$('#deck-wrap');
+  if(!list.length){ empty.classList.remove('hidden'); wrap.classList.add('hidden'); return; }
+  empty.classList.add('hidden'); wrap.classList.remove('hidden');
+  const c=list[idx]; $('#dflip').classList.remove('flipped'); State.deck.flipped=false;
+  $('#deck-kanji').textContent=c.kanji; $('#deck-reading').textContent=c.reading||'—'; $('#deck-meaning').textContent=c.meaning||'—';
+  $('#deck-counter').textContent=`${idx+1} / ${list.length}`;
+  const known=deckKnownSet(level); const pct=list.length?Math.round(Math.min(known.size,list.length)/list.length*100):0;
+  $('#deck-progress-txt').textContent=`Progress ${pct}%`;
+  const isKnown=known.has(c.id);
+  $('#deck-known').textContent=isKnown?'✓ Sudah Hafal':'Tandai Hafal';
+  $('#deck-known').style.opacity=isKnown?'1':'.7';
+}
+function deckFlip(){ State.deck.flipped=!State.deck.flipped; $('#dflip').classList.toggle('flipped',State.deck.flipped); if(State.deck.flipped&&State.autoplay){const c=State.deck.list[State.deck.idx]; if(c)Speech.speak(c.kanji);} }
+function deckMove(d){ const n=State.deck.list.length; if(!n)return; State.deck.idx=(State.deck.idx+d+n)%n; renderDeck(); }
+function deckShuffle(){ const a=State.deck.list; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } State.deck.idx=0; renderDeck(); toast('Kartu diacak 🔀','success',1200); }
+function deckToggleKnown(){
+  const {list,idx,level}=State.deck; const c=list[idx]; if(!c)return;
+  const set=deckKnownSet(level);
+  if(set.has(c.id)) set.delete(c.id); else set.add(c.id);
+  deckSaveKnown(level,set); renderDeck();
+}
+
 /* ============================ PROGRESS + CHARTS ============================ */
 function renderProgress(){
   const {total,hafal,belum,pct}=stats();
@@ -1027,6 +1142,7 @@ function renderSettings(){
   const name=State.profile?.name||'Pelajar';
   $('#set-name').textContent=name; $('#set-email').textContent=State.user?.email||''; $('#set-avatar').textContent=(name[0]||'P').toUpperCase();
   $('#set-autoplay').checked=State.autoplay;
+  populateVoicePicker();
 }
 function exportData(){
   const payload={app:'nihongo-flash',version:2,exported_at:new Date().toISOString(),profile:{name:State.profile?.name||''},
@@ -1061,13 +1177,14 @@ function importData(file){
 /* ============================ NAV / REFRESH ============================ */
 function refreshAll(){ renderDashboard(); renderCategory(); refreshFilters(); renderFlashcards(); renderNotes(); renderProgress(); renderSettings(); }
 function goto(screen){
-  show(screen); setActiveNav(['dashboard','flashcard','review','dictionary','notes','settings'].includes(screen)?screen:'');
+  show(screen); setActiveNav(screen==='deck'?'dictionary':(['dashboard','flashcard','review','dictionary','notes','settings'].includes(screen)?screen:''));
   if(screen==='dashboard')renderDashboard();
   if(screen==='category')renderCategory();
   if(screen==='flashcard'){State.fcLimit=60;refreshFilters();renderFlashcards();}
   if(screen==='study')renderStudy();
   if(screen==='review'){startReview();renderReview();}
-  if(screen==='dictionary'){ if(!State.dictResults.length) runDictionarySearch(); else renderDictionary(); }
+  if(screen==='dictionary'){ renderDeckCards(); if(!State.dictResults.length) runDictionarySearch(); else renderDictionary(); }
+  if(screen==='deck')renderDeck();
   if(screen==='notes'){refreshFilters();renderNotes();}
   if(screen==='progress')renderProgress();
   if(screen==='settings')renderSettings();
@@ -1112,7 +1229,16 @@ function bindEvents(){
   $('#dict-level').addEventListener('change',runDictionarySearch);
   $('#dict-more').onclick=()=>{State.dictLimit+=50;renderDictionary();};
 
+  $('#dflip').onclick=deckFlip;
+  $('#deck-speak-f').onclick=e=>{e.stopPropagation();const c=State.deck.list[State.deck.idx];if(c)Speech.speak(c.kanji);};
+  $('#deck-speak-b').onclick=e=>{e.stopPropagation();const c=State.deck.list[State.deck.idx];if(c)Speech.speak(c.kanji);};
+  $('#deck-known').onclick=e=>{e.stopPropagation();deckToggleKnown();};
+  $('#deck-prev').onclick=()=>deckMove(-1);
+  $('#deck-next').onclick=()=>deckMove(1);
+  $('#deck-shuffle').onclick=deckShuffle;
+
   $('#set-autoplay').addEventListener('change',e=>{ State.autoplay=e.target.checked; localStorage.setItem('nf_autoplay',State.autoplay?'1':'0'); });
+  $('#set-voice').addEventListener('change',e=>{ Speech.setVoice(e.target.value); if(e.target.value) toast('Voice diubah','success',1200); });
   $('#btn-logout').onclick=doLogout; $('#btn-export').onclick=exportData;
   $('#btn-import').onclick=()=>$('#import-file').click();
   $('#import-file').onchange=e=>{ if(e.target.files[0])importData(e.target.files[0]); e.target.value=''; };
