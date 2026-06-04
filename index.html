@@ -302,6 +302,12 @@ input,select,textarea{font-family:inherit}
 [data-theme="dark"] .speak-btn{background:#334155;color:var(--primary)}
 [data-theme="dark"] .btn-ghost{background:transparent;border-color:#334155;color:var(--text)}
 [data-theme="dark"] .loader-card{background:#1E293B}
+/* === DASHBOARD HEADER GLOW === */
+#screen-dashboard .page{position:relative;overflow:hidden}
+#screen-dashboard .page::before{content:'';position:absolute;top:0;left:-18px;right:-18px;height:260px;background:linear-gradient(180deg,rgba(99,102,241,.10) 0%,rgba(129,140,248,.06) 40%,rgba(255,255,255,0) 100%);pointer-events:none;z-index:0}
+#screen-dashboard .page > *{position:relative;z-index:1}
+[data-theme="dark"] #screen-dashboard .page::before{background:linear-gradient(180deg,rgba(99,102,241,.18) 0%,rgba(129,140,248,.08) 40%,rgba(15,23,42,0) 100%)}
+
 /* === ONBOARDING === */
 .ob-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:24px 24px calc(32px + var(--safe-b));max-width:480px;margin:0 auto;position:relative}
 .ob-skip{background:none;border:none;color:var(--text-3);font-weight:600;font-size:14px;padding:8px 4px;align-self:flex-end;cursor:pointer;transition:color .2s}
