@@ -27,6 +27,7 @@ const State = {
   deckProgress:{},
   ttsSpeed: parseFloat(localStorage.getItem('nf_tts_speed')||'1.0'),
   theme: localStorage.getItem('nf_theme')||'light',
+  onboardIdx: 0,
   autoplay: localStorage.getItem('nf_autoplay')==='1'
 };
 
@@ -199,7 +200,9 @@ async function ensureProfile(user){
 }
 async function afterLogin(user){
   State.user=user; overlay('Memuat data…'); await ensureProfile(user); await loadAll(); overlayOff();
-  setNavVisible(true); goto('dashboard');
+  setNavVisible(true);
+  if(!localStorage.getItem('nf_onboarded')){ showOnboarding(); }
+  else { goto('dashboard'); }
 }
 
 /* ============================ DATA ============================ */
@@ -245,6 +248,59 @@ function dueCards(){ const t=todayStr(); return State.flashcards.filter(f=>(f.ne
 function effectiveStreak(){ const p=State.profile; if(!p||!p.last_review_date)return 0; const d=daysBetween(p.last_review_date,todayStr()); return d<=1 ? (p.streak||0) : 0; }
 
 /* ============================ DASHBOARD ============================ */
+/* ============================ ONBOARDING ============================ */
+const OB_TOTAL = 4;
+function showOnboarding(){
+  State.onboardIdx = 0;
+  setNavVisible(false);
+  show('onboarding');
+  obRender();
+}
+function obRender(){
+  const idx = State.onboardIdx;
+  const track = $('#ob-track');
+  if(track) track.style.transform = `translateX(-${idx * 100}%)`;
+  $$('.ob-dot').forEach((d,i) => d.classList.toggle('active', i===idx));
+  const prev = $('#ob-prev'); const next = $('#ob-next');
+  if(prev) prev.classList.toggle('hidden', idx===0);
+  if(next){
+    next.textContent = idx === OB_TOTAL-1 ? '🚀 Mulai Belajar!' : 'Berikutnya →';
+    if(idx === OB_TOTAL-1){ next.style.background='linear-gradient(135deg,#6366F1,#818CF8)'; }
+    else{ next.style.background=''; }
+  }
+}
+function obFinish(){
+  localStorage.setItem('nf_onboarded','1');
+  setNavVisible(true);
+  goto('dashboard');
+}
+function bindOnboarding(){
+  $('#ob-next')?.addEventListener('click',()=>{
+    if(State.onboardIdx < OB_TOTAL-1){ State.onboardIdx++; obRender(); }
+    else obFinish();
+  });
+  $('#ob-prev')?.addEventListener('click',()=>{
+    if(State.onboardIdx > 0){ State.onboardIdx--; obRender(); }
+  });
+  $('#ob-skip')?.addEventListener('click', obFinish);
+  $$('.ob-dot').forEach(d => d.addEventListener('click',()=>{
+    State.onboardIdx = parseInt(d.dataset.i); obRender();
+  }));
+  // Swipe support
+  let tx=0;
+  const slider = $('#ob-track');
+  if(slider){
+    slider.addEventListener('touchstart',e=>{ tx=e.touches[0].clientX; },{passive:true});
+    slider.addEventListener('touchend',e=>{
+      const diff = tx - e.changedTouches[0].clientX;
+      if(Math.abs(diff)>50){
+        if(diff>0 && State.onboardIdx<OB_TOTAL-1){ State.onboardIdx++; obRender(); }
+        else if(diff<0 && State.onboardIdx>0){ State.onboardIdx--; obRender(); }
+      }
+    },{passive:true});
+  }
+}
+
 function renderDashboard(){
   const {total,hafal,belum,pct}=stats(); const due=dueCards().length;
   const name=State.profile?.name||'Pelajar';
@@ -854,6 +910,7 @@ function bindEvents(){
   if($('#fc-batch-btn')) $('#fc-batch-btn').onclick=batchImportForm;
   if($('#dash-batch')) $('#dash-batch').onclick=batchImportForm;
   if($('#dash-start')) $('#dash-start').onclick=()=>{ const due=dueCards().length; goto(due>0?'review':'flashcard'); };
+  bindOnboarding();
   $('#fc-study-btn').onclick=startStudy;
   $('#fc-search').addEventListener('input',()=>{ clearTimeout(searchTimer); searchTimer=setTimeout(()=>{State.fcLimit=60;renderFlashcards();},120); });
   $('#fc-filter').addEventListener('change',()=>{State.fcLimit=60;renderFlashcards();});
