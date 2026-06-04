@@ -556,7 +556,20 @@ input,select,textarea{font-family:inherit}
 <div id="overlay-root"></div>
 <div id="install-root"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+// GUARD: cek apakah Supabase CDN berhasil dimuat sebelum app jalan
+if (!window.supabase) {
+  document.getElementById('boot').innerHTML =
+    '<div style="padding:32px;text-align:center;max-width:320px;margin:0 auto">' +
+    '<div style="font-size:52px;margin-bottom:16px">📡</div>' +
+    '<div style="font-weight:800;font-size:20px;color:#111827">Gagal Memuat</div>' +
+    '<div style="color:#6B7280;margin-top:10px;font-size:15px;line-height:1.5">Koneksi bermasalah saat memuat app.<br/>Cek internet lalu refresh halaman.</div>' +
+    '<button onclick="location.reload(true)" style="margin-top:20px;padding:14px 28px;background:#6366F1;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;width:100%">🔄 Refresh Sekarang</button>' +
+    '</div>';
+  throw new Error('Supabase SDK gagal dimuat — cek koneksi internet');
+}
+</script>
 <script>
 /* ============================ CONFIG ============================ */
 const CONFIG = {
@@ -568,9 +581,14 @@ const CONFIG = {
 /* SRS schedule: hari berdasarkan level */
 const SRS_DAYS = [0, 1, 3, 7, 14, 30, 60];
 
-const sb = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY, {
-  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-});
+let sb;
+try {
+  sb = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+  });
+} catch(e) {
+  console.error('Supabase init gagal:', e);
+}
 
 const State = {
   user:null, profile:null, categories:[], flashcards:[], notes:[],
@@ -1398,18 +1416,4 @@ function bindEvents(){
   $('#study-prev').onclick=()=>studyMove(-1); $('#study-next').onclick=()=>studyMove(1);
 
   $('#review-show').onclick=reviewShowAnswer;
-  $('#review-speak-f').onclick=e=>{e.stopPropagation();const f=State.review.list[State.review.idx];if(f)Speech.speak(f.kanji);};
-  $('#review-speak-b').onclick=e=>{e.stopPropagation();const f=State.review.list[State.review.idx];if(f)Speech.speak(f.kanji);};
-  $$('#review-grade [data-grade]').forEach(b=>b.onclick=()=>reviewGrade(b.dataset.grade));
-
-  $('#note-add-btn').onclick=()=>noteForm(null);
-  $('#note-search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(renderNotes,120);});
-  $('#note-filter').addEventListener('change',renderNotes);
-
-  $('#dict-search').addEventListener('input',()=>{clearTimeout(dictTimer);dictTimer=setTimeout(runDictionarySearch,250);});
-  $('#dict-level').addEventListener('change',runDictionarySearch);
-  $('#dict-more').onclick=()=>{State.dictLimit+=50;renderDictionary();};
-
-  $('#dflip').onclick=deckFlip;
-  $('#deck-speak-f').onclick=e=>{e.stopPropagation();const c=State.deck.list[State.deck.idx];if(c)Speech.speak(c.kanji);};
-  $('#deck-speak-b').onclick=e=>{e.stopPropagation();co
+  $('#review-speak-f').onclick=e=>{e.stopPropagation();const f=State.review.list[
