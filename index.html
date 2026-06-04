@@ -302,6 +302,27 @@ input,select,textarea{font-family:inherit}
 [data-theme="dark"] .speak-btn{background:#334155;color:var(--primary)}
 [data-theme="dark"] .btn-ghost{background:transparent;border-color:#334155;color:var(--text)}
 [data-theme="dark"] .loader-card{background:#1E293B}
+/* === ONBOARDING === */
+.ob-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:24px 24px calc(32px + var(--safe-b));max-width:480px;margin:0 auto;position:relative}
+.ob-skip{background:none;border:none;color:var(--text-3);font-weight:600;font-size:14px;padding:8px 4px;align-self:flex-end;cursor:pointer;transition:color .2s}
+.ob-skip:hover{color:var(--text-2)}
+.ob-slider{width:100%;flex:1;display:flex;align-items:center;overflow:hidden;border-radius:28px}
+.ob-track{display:flex;transition:transform .35s cubic-bezier(.4,0,.2,1);width:100%}
+.ob-slide{min-width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;padding:16px 8px;gap:16px}
+.ob-art{font-size:88px;line-height:1;filter:drop-shadow(0 8px 20px rgba(99,102,241,.2));animation:obFloat 3s ease-in-out infinite}
+@keyframes obFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.ob-badge{background:#EEF2FF;color:var(--primary);font-weight:700;font-size:13px;padding:6px 16px;border-radius:999px;letter-spacing:.04em}
+.ob-title{font-size:28px;font-weight:800;color:var(--text);letter-spacing:-.02em;line-height:1.2}
+.ob-body{font-size:16px;font-weight:500;color:var(--text-2);line-height:1.65;max-width:320px}
+.ob-body strong{color:var(--text);font-weight:700}
+.ob-dots{display:flex;gap:8px;align-items:center;padding:8px 0}
+.ob-dot{width:8px;height:8px;border-radius:999px;background:var(--border);transition:all .3s cubic-bezier(.4,0,.2,1);cursor:pointer}
+.ob-dot.active{width:28px;background:var(--primary)}
+.ob-actions{display:flex;gap:12px;width:100%}
+.ob-prev{flex:0 0 auto;width:auto;min-width:120px}
+.ob-next{flex:1}
+[data-theme="dark"] .ob-badge{background:rgba(99,102,241,.2);color:#A5B4FC}
+[data-theme="dark"] .ob-dot{background:#334155}
 </style>
 </head>
 <body>
@@ -405,6 +426,64 @@ input,select,textarea{font-family:inherit}
       <div class="btn-row" style="margin-top:14px">
         <button class="btn btn-ghost" data-nav="flashcard">📚 Flashcard</button>
         <button class="btn btn-ghost" id="dash-batch">⚡ Batch</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ONBOARDING -->
+  <section id="screen-onboarding" class="screen">
+    <div class="ob-wrap">
+      <button class="ob-skip" id="ob-skip">Lewati</button>
+      <div class="ob-slider">
+        <div class="ob-track" id="ob-track">
+
+          <!-- Slide 1: Welcome -->
+          <div class="ob-slide">
+            <div class="ob-art">🌸</div>
+            <div class="ob-badge">Nihongo Flash</div>
+            <h2 class="ob-title">Selamat Datang!</h2>
+            <p class="ob-body">Belajar bahasa Jepang lebih mudah, efektif, dan menyenangkan — kapan saja, di mana saja.</p>
+          </div>
+
+          <!-- Slide 2: Flashcard -->
+          <div class="ob-slide">
+            <div class="ob-art">📚</div>
+            <div class="ob-badge">Flashcard</div>
+            <h2 class="ob-title">Kartu Belajar Interaktif</h2>
+            <p class="ob-body">Tap kartu untuk membalik dan lihat arti + cara baca. Tandai <strong>Hafal</strong> atau <strong>Belum Hafal</strong> untuk melacak progress.</p>
+          </div>
+
+          <!-- Slide 3: Kamus -->
+          <div class="ob-slide">
+            <div class="ob-art">📖</div>
+            <div class="ob-badge">Kamus JLPT</div>
+            <h2 class="ob-title">1000+ Kosakata N5–N3</h2>
+            <p class="ob-body">Kamus bawaan JLPT N5, N4, dan N3 siap dipelajari. Mulai dari deck bawaan atau tambah kartu sendiri.</p>
+          </div>
+
+          <!-- Slide 4: SRS -->
+          <div class="ob-slide">
+            <div class="ob-art">🎯</div>
+            <div class="ob-badge">Review Cerdas</div>
+            <h2 class="ob-title">Sistem SRS Otomatis</h2>
+            <p class="ob-body">Kartu muncul di waktu yang tepat agar tidak terlupakan. Semakin sering kamu review, semakin kuat ingatanmu.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Dots -->
+      <div class="ob-dots" id="ob-dots">
+        <span class="ob-dot active" data-i="0"></span>
+        <span class="ob-dot" data-i="1"></span>
+        <span class="ob-dot" data-i="2"></span>
+        <span class="ob-dot" data-i="3"></span>
+      </div>
+
+      <!-- CTA -->
+      <div class="ob-actions">
+        <button class="btn btn-ghost ob-prev hidden" id="ob-prev">← Kembali</button>
+        <button class="btn btn-primary ob-next" id="ob-next">Berikutnya →</button>
       </div>
     </div>
   </section>
