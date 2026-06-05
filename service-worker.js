@@ -1,4 +1,4 @@
-const CACHE = 'nihongo-flash-v17';
+const CACHE = 'nihongo-flash-v18';
 const APP_SHELL = [
   './',
   './index.html',
