@@ -28,6 +28,7 @@ const State = {
   ttsSpeed: parseFloat(localStorage.getItem('nf_tts_speed')||'1.0'),
   theme: localStorage.getItem('nf_theme')||'light',
   onboardIdx: 0,
+  translate:{ from:'id', to:'ja', mode:'both' },
   autoplay: localStorage.getItem('nf_autoplay')==='1'
 };
 
@@ -248,6 +249,78 @@ function dueCards(){ const t=todayStr(); return State.flashcards.filter(f=>(f.ne
 function effectiveStreak(){ const p=State.profile; if(!p||!p.last_review_date)return 0; const d=daysBetween(p.last_review_date,todayStr()); return d<=1 ? (p.streak||0) : 0; }
 
 /* ============================ DASHBOARD ============================ */
+/* ============================ TRANSLATE ============================ */
+const TR_API = CONFIG.API_URL.replace('/japanese','/translate');
+const TR_LANGS = { id:'🇮🇩 Indonesia', ja:'🇯🇵 日本語' };
+
+function renderTranslateDir(){
+  const {from,to}=State.translate;
+  $('#tr-from-label').textContent=TR_LANGS[from];
+  $('#tr-to-label').textContent=TR_LANGS[to];
+}
+function bindTranslate(){
+  // Char counter
+  $('#tr-input')?.addEventListener('input',e=>{
+    $('#tr-charcount').textContent=e.target.value.length;
+  });
+  // Swap direction
+  $('#tr-swap-btn')?.addEventListener('click',()=>{
+    [State.translate.from, State.translate.to]=[State.translate.to, State.translate.from];
+    renderTranslateDir();
+  });
+  // Mode chips
+  $$('.tr-chip').forEach(c=>c.addEventListener('click',()=>{
+    $$('.tr-chip').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+    State.translate.mode=c.dataset.mode;
+  }));
+  // Copy buttons
+  $$('.tr-copy').forEach(btn=>btn.addEventListener('click',()=>{
+    const target=$('#'+btn.dataset.target);
+    if(!target?.textContent) return;
+    navigator.clipboard?.writeText(target.textContent).then(()=>toast('Disalin! 📋','success',1200));
+  }));
+  // Translate button
+  $('#tr-btn')?.addEventListener('click', doTranslate);
+  // Enter in context = focus textarea
+  $('#tr-context')?.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); $('#tr-input')?.focus(); }});
+}
+async function doTranslate(){
+  const text=$('#tr-input')?.value?.trim();
+  if(!text){ toast('Ketik teks dulu','warning'); return; }
+  const {from,to,mode}=State.translate;
+  const context=$('#tr-context')?.value?.trim()||'';
+  // Show loading
+  $('#tr-results')?.classList.add('hidden');
+  $('#tr-loading')?.classList.remove('hidden');
+  $('#tr-btn').disabled=true; $('#tr-btn').textContent='Menerjemahkan…';
+  try{
+    const res=await fetch(TR_API,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({text,from,to,mode,context}),
+      signal:AbortSignal.timeout(30000)
+    });
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.error||'AI error');
+    // Populate results
+    const showFormal = mode!=='casual' && data.formal;
+    const showCasual = mode!=='formal' && data.casual;
+    $('#tr-formal-wrap').classList.toggle('hidden',!showFormal);
+    $('#tr-casual-wrap').classList.toggle('hidden',!showCasual);
+    if(showFormal) $('#tr-formal').textContent=data.formal;
+    if(showCasual) $('#tr-casual').textContent=data.casual;
+    $('#tr-notes').textContent=data.notes||'';
+    $('#tr-notes-wrap').classList.toggle('hidden',!data.notes);
+    $('#tr-results').classList.remove('hidden');
+  }catch(err){
+    toast('Terjemah gagal: '+err.message,'error',4000);
+  }finally{
+    $('#tr-loading')?.classList.add('hidden');
+    $('#tr-btn').disabled=false; $('#tr-btn').innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 8l6 6"/><path d="M4 14l6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="M22 22l-5-10-5 10"/><path d="M14 18h6"/></svg> Terjemahkan';
+  }
+}
+
 /* ============================ ONBOARDING ============================ */
 const OB_TOTAL = 4;
 function showOnboarding(){
@@ -329,8 +402,8 @@ function renderDashboard(){
   const banner=$('#review-banner');
   banner.innerHTML = due>0 ? `<div class="banner" style="margin-bottom:14px"><div class="grow"><div class="bt">📚 Ada ${due} kartu untuk direview.</div></div><button class="btn btn-sm btn-primary" id="banner-review">Review →</button></div>` : '';
   if(due>0) $('#banner-review').onclick=()=>goto('review');
-  // Nav badge
-  const navBadge=$('#nav-review-ic'); if(navBadge){ let b=navBadge.querySelector('.nav-badge'); if(due>0){ if(!b){b=document.createElement('span');b.className='nav-badge';navBadge.appendChild(b);} b.textContent=due>99?'99+':due; } else if(b){ b.remove(); } }
+  // Nav badge for translate if needed (future)
+  // const navBadge=$('#nav-review-ic'); removed - review tab replaced with translate
   drawWeekChart();
 }
 function drawWeekChart(){
@@ -912,6 +985,8 @@ function bindEvents(){
   if($('#dash-batch')) $('#dash-batch').onclick=batchImportForm;
   if($('#dash-start')) $('#dash-start').onclick=()=>{ const due=dueCards().length; goto(due>0?'review':'flashcard'); };
   bindOnboarding();
+  bindTranslate();
+  renderTranslateDir();
   $('#fc-study-btn').onclick=startStudy;
   $('#fc-search').addEventListener('input',()=>{ clearTimeout(searchTimer); searchTimer=setTimeout(()=>{State.fcLimit=60;renderFlashcards();},120); });
   $('#fc-filter').addEventListener('change',()=>{State.fcLimit=60;renderFlashcards();});
