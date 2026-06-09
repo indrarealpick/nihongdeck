@@ -1,6 +1,6 @@
 {
-  "name": "Nihongo Flash",
-  "short_name": "Nihongo",
+  "name": "Nihongo Deck",
+  "short_name": "NihongoDeck",
   "description": "Belajar Bahasa Jepang Lebih Cepat.",
   "lang": "id",
   "start_url": "./index.html",

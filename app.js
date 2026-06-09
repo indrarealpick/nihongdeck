@@ -2,7 +2,7 @@
 const CONFIG = {
   SUPABASE_URL:      'https://upecfwgmpmkksgemhmeu.supabase.co',
   SUPABASE_ANON_KEY: 'sb_publishable_J-5H76Dnk2t3qXHyX8VDbw_wLCQSSCK',
-  API_URL:           'https://nihongflash.vercel.app/api/japanese'
+  API_URL:           'https://nihongodeck.vercel.app/api/japanese'
 };
 
 /* SRS schedule: hari berdasarkan level */
@@ -1333,7 +1333,7 @@ let deferredPrompt=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;showInstallPill();});
 function showInstallPill(){
   if(!deferredPrompt)return;
-  $('#install-root').innerHTML=`<div class="install-pill nb"><div class="grow"><div class="t">📲 Pasang Nihongo Flash</div></div><button class="btn btn-sm btn-primary" id="pwa-install">Pasang</button><button class="btn btn-icon btn-ghost" id="pwa-dismiss">✕</button></div>`;
+  $('#install-root').innerHTML=`<div class="install-pill nb"><div class="grow"><div class="t">📲 Pasang Nihongo Deck</div></div><button class="btn btn-sm btn-primary" id="pwa-install">Pasang</button><button class="btn btn-icon btn-ghost" id="pwa-dismiss">✕</button></div>`;
   $('#pwa-install').onclick=async()=>{$('#install-root').innerHTML='';deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;};
   $('#pwa-dismiss').onclick=()=>$('#install-root').innerHTML='';
 }

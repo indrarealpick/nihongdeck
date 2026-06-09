@@ -4,15 +4,15 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
 <meta name="theme-color" content="#FAFAF8" />
-<meta name="description" content="Nihongo Flash — Belajar Bahasa Jepang Lebih Cepat." />
-<title>Nihongo Flash</title>
+<meta name="description" content="Nihongo Deck — Belajar Bahasa Jepang Setiap Hari." />
+<title>Nihongo Deck</title>
 
 <link rel="manifest" href="manifest.json" />
 <link rel="icon" type="image/svg+xml" href="icon.svg" />
 <link rel="apple-touch-icon" href="icon-192.png" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-<meta name="apple-mobile-web-app-title" content="Nihongo Flash" />
+<meta name="apple-mobile-web-app-title" content="Nihongo Deck" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -91,11 +91,17 @@ input,select,textarea{font-family:inherit}
 .section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3);margin:24px 2px 10px}
 
 /* === WELCOME === */
-#screen-welcome .page{display:flex;flex-direction:column;min-height:100vh;justify-content:center;gap:18px}
-.brand{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;margin-bottom:8px}
-.brand .logo{width:96px;height:96px}.brand h1{font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1}
-.brand .tag-line{font-weight:500;font-size:15px;color:var(--text-2)}
-.welcome-actions{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+/* === WELCOME SCREEN === */
+.welcome-page{display:flex;flex-direction:column;min-height:100dvh;justify-content:space-between;padding-top:env(safe-area-inset-top,0px)}
+.wlc-hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:60px 0 32px;gap:0}
+.wlc-logo-wrap{width:110px;height:110px;margin-bottom:24px;filter:drop-shadow(0 8px 20px rgba(222,122,140,.22))}
+.wlc-logo{width:100%;height:100%}
+.wlc-brand{font-size:34px;font-weight:800;letter-spacing:-.03em;color:var(--text);line-height:1}
+.wlc-tag{font-size:16px;font-weight:500;color:var(--text-2);margin-top:12px;line-height:1.55}
+.wlc-features{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:24px}
+.wlc-chip{background:var(--card);border:1px solid var(--border);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600;color:var(--text-2);box-shadow:var(--shadow-xs)}
+.wlc-actions{display:flex;flex-direction:column;gap:12px;padding:0 0 40px}
+.wlc-footer{text-align:center;font-size:13px;font-weight:500;color:var(--text-3);margin-top:4px}
 .divider{display:flex;align-items:center;gap:12px;color:var(--text-3);font-weight:600;font-size:13px}
 .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--border)}
 .g-btn{background:var(--surface);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;gap:10px;min-height:52px;box-shadow:var(--shadow-xs)}.g-btn svg{width:20px;height:20px}
@@ -408,7 +414,8 @@ input,select,textarea{font-family:inherit}
 .ob-actions{display:flex;gap:12px;width:100%}
 .ob-prev{flex:0 0 auto;width:auto;min-width:120px}
 .ob-next{flex:1}
-[data-theme="dark"] .ob-badge{background:rgba(99,102,241,.2);color:#A5B4FC}
+[data-theme="dark"] .ob-badge{background:rgba(222,122,140,.2);color:#F2A0B0}
+[data-theme="dark"] .wlc-chip{background:#27272A;border-color:#3A3940}
 [data-theme="dark"] .ob-dot{background:#334155}
 /* === SWIPE HINTS === */
 .flip-swipe-hints{display:flex;justify-content:space-between;align-items:center;width:100%;position:absolute;bottom:14px;left:0;padding:0 14px;font-size:11px;font-weight:700;opacity:.38;pointer-events:none}
@@ -457,24 +464,37 @@ input,select,textarea{font-family:inherit}
 
   <!-- WELCOME -->
   <section id="screen-welcome" class="screen">
-    <div class="page page-noNav">
-      <div class="brand">
-        <svg class="logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-          <rect x="6" y="6" width="108" height="108" rx="24" fill="#FCEFF2" stroke="#DE7A8C" stroke-width="5"/>
-          <text x="60" y="80" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="60" font-weight="900" fill="#DE7A8C">日</text>
-        </svg>
-        <h1>Nihongo&nbsp;Flash</h1>
-        <div class="tag-line">Belajar Bahasa Jepang Lebih Cepat.</div>
+    <div class="page page-noNav welcome-page">
+
+      <!-- Hero top -->
+      <div class="wlc-hero">
+        <div class="wlc-logo-wrap">
+          <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="wlc-logo">
+            <rect x="4" y="4" width="112" height="112" rx="26" fill="#FCEFF2" stroke="#DE7A8C" stroke-width="5"/>
+            <text x="60" y="80" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="60" font-weight="900" fill="#DE7A8C">日</text>
+          </svg>
+        </div>
+        <div class="wlc-brand">Nihongo Deck</div>
+        <div class="wlc-tag">Kuasai Kosakata Jepang<br>dengan metode terbukti setiap hari.</div>
+        <div class="wlc-features">
+          <span class="wlc-chip">🗂️ JLPT N5–N3</span>
+          <span class="wlc-chip">🧠 Spaced Repetition</span>
+          <span class="wlc-chip">🔥 Daily Streak</span>
+        </div>
       </div>
-      <div class="welcome-actions">
-        <button class="btn btn-primary" data-go="register">Daftar</button>
-        <button class="btn btn-ghost" data-go="login">Login</button>
+
+      <!-- Actions -->
+      <div class="wlc-actions">
+        <button class="btn btn-primary" data-go="register">Mulai Belajar Gratis</button>
+        <button class="btn btn-ghost" data-go="login">Sudah punya akun? Login</button>
         <div class="divider">atau</div>
         <button class="btn g-btn" id="welcome-google">
           <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.5 6.1 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.5 6.1 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 10-2 13.6-5.2l-6.3-5.3C29.3 35 26.8 36 24 36c-5.3 0-9.7-3.1-11.3-7.6l-6.5 5C9.6 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4 5.5l6.3 5.3C41.4 35.9 44 30.4 44 24c0-1.3-.1-2.3-.4-3.5z"/></svg>
           Masuk dengan Google
         </button>
+        <p class="wlc-footer">Gratis selamanya. Tidak perlu kartu kredit.</p>
       </div>
+
     </div>
   </section>
 
@@ -588,7 +608,7 @@ input,select,textarea{font-family:inherit}
           <!-- Slide 1: Welcome -->
           <div class="ob-slide">
             <div class="ob-art">🌸</div>
-            <div class="ob-badge">Nihongo Flash</div>
+            <div class="ob-badge">Nihongo Deck</div>
             <h2 class="ob-title">Selamat Datang!</h2>
             <p class="ob-body">Belajar bahasa Jepang lebih mudah, efektif, dan menyenangkan — kapan saja, di mana saja.</p>
           </div>
@@ -895,7 +915,7 @@ input,select,textarea{font-family:inherit}
       <div class="section-title">Akun</div>
       <div class="set-item nb"><div class="grow"><div class="t">Logout</div><div class="d">Keluar dari akun ini</div></div><button class="btn btn-sm btn-danger" id="btn-logout">Logout</button></div>
       <div class="section-title">Tentang</div>
-      <div class="set-item nb"><div class="grow"><div class="t">Nihongo Flash</div><div class="d">v2.0.0 — Belajar Bahasa Jepang Lebih Cepat.</div></div></div>
+      <div class="set-item nb"><div class="grow"><div class="t">Nihongo Deck</div><div class="d">v2.1.0 — Belajar Bahasa Jepang Setiap Hari.</div></div></div>
     </div>
   </section>
 
