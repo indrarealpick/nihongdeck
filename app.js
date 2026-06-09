@@ -259,6 +259,15 @@ function dueCards(){ const t=todayStr(); return State.flashcards.filter(f=>(f.ne
 function effectiveStreak(){ const p=State.profile; if(!p||!p.last_review_date)return 0; const d=daysBetween(p.last_review_date,todayStr()); return d<=1 ? (p.streak||0) : 0; }
 
 /* ============================ DASHBOARD ============================ */
+/* ============================ ICON SYSTEM (Lucide) ============================ */
+const IC = {
+  trash: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>',
+  pencil: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>',
+  heart: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+  heartFill: '<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+};
+const JLPT_IC = { N5: '🌱', N4: '🌸', N3: '⛰️' };
+
 /* ============================ LOOKUP ============================ */
 let _lkData=null;
 function getRecentLookup(){ try{ return JSON.parse(localStorage.getItem('nf_recent_lookup')||'[]'); }catch{ return []; } }
@@ -460,7 +469,7 @@ async function renderDashDecks(){
     const c=lv.toLowerCase();
     const act = today>0 ? `<span class="deck-act">🔥 +${today} hari ini</span>` : '';
     return `<div class="deck-card" data-deck="${lv}">
-      <div class="deck-badge ${c}">${lv}</div>
+      <div class="deck-badge ${c}" title="${lv}">${JLPT_IC[lv]||lv}</div>
       <div class="deck-info">
         <div class="dn"><span>${lv} · ${names[lv]}</span><span class="dw">${hafal}/${total} kata</span></div>
         <div class="deck-pbar"><div class="deck-pfill ${c}" data-pct="${pct}"></div></div>
@@ -531,7 +540,7 @@ function renderCategory(){
   const list=$('#cat-list');
   if(!State.categories.length){ list.innerHTML=`<div class="empty nb"><span class="em">📂</span>Belum ada kategori.</div>`; return; }
   list.innerHTML=State.categories.map(c=>`<div class="row-card nb"><div class="grow"><div class="title">${esc(c.name)}</div><div class="sub">${countFor(c.id)} flashcard</div></div>
-    <button class="btn btn-mini btn-ghost" data-edit-cat="${c.id}">✎</button><button class="btn btn-mini btn-danger" data-del-cat="${c.id}">🗑</button></div>`).join('');
+    <button class="btn btn-mini btn-ghost" data-edit-cat="${c.id}">${IC.pencil}</button><button class="btn btn-mini btn-danger" data-del-cat="${c.id}">${IC.trash}</button></div>`).join('');
   $$('[data-edit-cat]',list).forEach(b=>b.onclick=()=>categoryForm(b.dataset.editCat));
   $$('[data-del-cat]',list).forEach(b=>b.onclick=()=>confirmDeleteCategory(b.dataset.delCat));
 }
@@ -578,9 +587,9 @@ function renderFlashcards(){
     <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><span class="tag gray">${esc(catName(f.category_id))}</span><span class="tag ${f.status==='hafal'?'green':''}">${f.status==='hafal'?'✓ Hafal':'Belum'}</span></div></div>
     <div class="card-actions">
       <button class="btn btn-mini btn-ghost" data-spk="${f.id}">🔊</button>
-      <button class="btn btn-mini btn-ghost" data-fav="${f.id}"><span class="star ${f.favorite?'on':''}">⭐</span></button>
-      <button class="btn btn-mini btn-ghost" data-edit-fc="${f.id}">✎</button>
-      <button class="btn btn-mini btn-danger" data-del-fc="${f.id}">🗑</button>
+      <button class="btn btn-mini btn-ghost" data-fav="${f.id}">${f.favorite?IC.heartFill:IC.heart}</button>
+      <button class="btn btn-mini btn-ghost" data-edit-fc="${f.id}">${IC.pencil}</button>
+      <button class="btn btn-mini btn-danger" data-del-fc="${f.id}">${IC.trash}</button>
     </div></div>`).join('');
   $('#fc-more').classList.toggle('hidden', all.length<=State.fcLimit);
   $$('[data-spk]',list).forEach(b=>b.onclick=()=>{ const f=State.flashcards.find(x=>x.id===b.dataset.spk); if(f)Speech.speak(f.kanji); });
@@ -904,8 +913,8 @@ function renderNotes(){
         <img src="${esc(n.image_url)}" data-view="${esc(n.image_url)}" alt="${esc(n.title)}" loading="lazy"/>
         <div class="note-photo-body"><div class="grow"><div class="npt">${esc(n.title||'Tanpa judul')}</div>
         <div class="npd">${fmtDate(n.created_at)}</div></div>
-        <button class="btn btn-mini btn-ghost" data-edit-note="${n.id}">✎</button>
-        <button class="btn btn-mini btn-danger" data-del-note="${n.id}">🗑</button></div>
+        <button class="btn btn-mini btn-ghost" data-edit-note="${n.id}">${IC.pencil}</button>
+        <button class="btn btn-mini btn-danger" data-del-note="${n.id}">${IC.trash}</button></div>
       </div>`).join('')+`</div>` : '';
   }
   // Manual notes
@@ -915,7 +924,7 @@ function renderNotes(){
     list.innerHTML=manuals.map(n=>`<div class="row-card nb"><div class="grow"><div class="title">${esc(n.title)}</div>
       <div class="sub">${esc((n.content||'').slice(0,80))}${(n.content||'').length>80?'…':''}</div>
       <div style="margin-top:8px"><span class="tag gray">${esc(n.category_id?catName(n.category_id):'Tanpa Kategori')}</span></div></div>
-      <div class="card-actions"><button class="btn btn-mini btn-ghost" data-edit-note="${n.id}">✎</button><button class="btn btn-mini btn-danger" data-del-note="${n.id}">🗑</button></div></div>`).join('');
+      <div class="card-actions"><button class="btn btn-mini btn-ghost" data-edit-note="${n.id}">${IC.pencil}</button><button class="btn btn-mini btn-danger" data-del-note="${n.id}">${IC.trash}</button></div></div>`).join('');
   }
   // Bind (both photo + manual)
   $$('[data-edit-note]').forEach(b=>b.onclick=()=>noteForm(b.dataset.editNote));

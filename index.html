@@ -125,7 +125,7 @@ input,select,textarea{font-family:inherit}
 .deck-list{display:flex;flex-direction:column;gap:10px}
 .deck-card{background:var(--card);border:1px solid var(--border-soft);border-radius:18px;padding:16px;box-shadow:var(--shadow-xs);display:flex;align-items:center;gap:14px;cursor:pointer;transition:transform .2s}
 .deck-card:active{transform:scale(.985)}
-.deck-badge{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex:0 0 auto;color:#fff}
+.deck-badge{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex:0 0 auto;line-height:1}
 .deck-badge.n5{background:#22C55E}.deck-badge.n4{background:#DE7A8C}.deck-badge.n3{background:#8B5CF6}
 .deck-info{flex:1;min-width:0}
 .deck-info .dn{font-weight:700;font-size:15px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
@@ -205,8 +205,8 @@ input,select,textarea{font-family:inherit}
 .toolbar{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}
 .toolbar .input{flex:1;min-width:140px}.toolbar .select{flex:1;min-width:120px}
 .fab-add{margin-bottom:14px}
-.star{font-size:20px;line-height:1;filter:grayscale(1);opacity:.4}
-.star.on{filter:none;opacity:1}
+.star{display:inline-flex;align-items:center;color:var(--text-3)}
+.star.on{color:var(--primary)}
 .load-more{margin-top:14px}
 
 /* === FLIP CARD === */
@@ -500,7 +500,7 @@ input,select,textarea{font-family:inherit}
 
   <!-- REGISTER -->
   <section id="screen-register" class="screen">
-    <div class="topbar"><button class="btn btn-icon btn-ghost" data-go="welcome">←</button><h1>Daftar</h1></div>
+    <div class="topbar"><button class="btn btn-icon btn-ghost" data-go="welcome"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg></button><h1>Daftar</h1></div>
     <div class="page page-noNav"><div class="auth-card nb"><div class="pad">
       <div class="field"><label>Nama</label><input class="input" id="reg-name" type="text" autocomplete="name" placeholder="Nama lengkap"/></div>
       <div class="field"><label>Email</label><input class="input" id="reg-email" type="email" autocomplete="email" placeholder="email@contoh.com"/></div>
@@ -513,7 +513,7 @@ input,select,textarea{font-family:inherit}
 
   <!-- LOGIN -->
   <section id="screen-login" class="screen">
-    <div class="topbar"><button class="btn btn-icon btn-ghost" data-go="welcome">←</button><h1>Login</h1></div>
+    <div class="topbar"><button class="btn btn-icon btn-ghost" data-go="welcome"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg></button><h1>Login</h1></div>
     <div class="page page-noNav"><div class="auth-card nb"><div class="pad">
       <div class="field"><label>Email</label><input class="input" id="log-email" type="email" autocomplete="email" placeholder="email@contoh.com"/></div>
       <div class="field"><label>Password</label><input class="input" id="log-pass" type="password" autocomplete="current-password" placeholder="Password"/></div>
@@ -572,10 +572,10 @@ input,select,textarea{font-family:inherit}
       <!-- Quick Actions -->
       <div class="section-title">Aksi Cepat</div>
       <div class="quick-grid">
-        <button class="quick-btn" id="qa-add"><span class="qa-ic">➕</span><span>Tambah Kata</span></button>
-        <button class="quick-btn" id="qa-review"><span class="qa-ic">📚</span><span>Review</span></button>
-        <button class="quick-btn" data-nav="dictionary"><span class="qa-ic">🔍</span><span>Kamus</span></button>
-        <button class="quick-btn" id="qa-fav"><span class="qa-ic">⭐</span><span>Favorit</span></button>
+        <button class="quick-btn" id="qa-add"><span class="qa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span><span>Tambah Kata</span></button>
+        <button class="quick-btn" id="qa-review"><span class="qa-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><span>Review</span></button>
+        <button class="quick-btn" data-nav="dictionary"><span class="qa-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><span>Kamus</span></button>
+        <button class="quick-btn" id="qa-fav"><span class="qa-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></span><span>Favorit</span></button>
       </div>
 
       <!-- Progress Mingguan -->
@@ -677,7 +677,7 @@ input,select,textarea{font-family:inherit}
       <div class="toolbar">
         <select class="select" id="fc-filter"><option value="">Semua Kategori</option></select>
         <select class="select" id="fc-status">
-          <option value="">Semua</option><option value="favorite">⭐ Favorit</option>
+          <option value="">Semua</option><option value="favorite"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> Favorit</option>
           <option value="belum_hafal">Belum Hafal</option><option value="hafal">Sudah Hafal</option>
         </select>
         <select class="select" id="fc-sort"><option value="new">Terbaru</option><option value="az">A → Z</option><option value="status">Belum Dulu</option></select>
@@ -689,7 +689,7 @@ input,select,textarea{font-family:inherit}
 
   <!-- STUDY (FLIP) -->
   <section id="screen-study" class="screen">
-    <div class="topbar"><button class="btn btn-icon btn-ghost" data-nav="flashcard">←</button><h1>Belajar</h1><div class="spacer"></div><span class="tag" id="study-cat">Semua</span></div>
+    <div class="topbar"><button class="btn btn-icon btn-ghost" data-nav="flashcard"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg></button><h1>Belajar</h1><div class="spacer"></div><span class="tag" id="study-cat">Semua</span></div>
     <div class="page">
       <div class="study-wrap" id="study-wrap">
         <div class="study-head">
@@ -698,11 +698,11 @@ input,select,textarea{font-family:inherit}
         </div>
         <div class="flip" id="flip"><div class="flip-inner">
           <div class="flip-face flip-front">
-            <button class="speak-btn" id="study-speak-f">🔊</button>
+            <button class="speak-btn" id="study-speak-f"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
             <div class="kanji" id="study-kanji">—</div><div class="flip-hint">Ketuk untuk membalik</div>
           </div>
           <div class="flip-face flip-back">
-            <button class="speak-btn" id="study-speak-b">🔊</button>
+            <button class="speak-btn" id="study-speak-b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
             <div class="rd-lbl">Cara Baca</div><div class="reading" id="study-reading">—</div>
             <div class="mn-lbl">Arti</div><div class="meaning" id="study-meaning">—</div>
             <div class="fc-example hidden" id="study-example"></div>
@@ -719,17 +719,17 @@ input,select,textarea{font-family:inherit}
 
   <!-- REVIEW (SRS) -->
   <section id="screen-review" class="screen">
-    <div class="topbar"><button class="btn btn-icon btn-ghost" data-nav="dashboard">←</button><h1>Review</h1><div class="spacer"></div><span class="tag" id="review-left">0</span></div>
+    <div class="topbar"><button class="btn btn-icon btn-ghost" data-nav="dashboard"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg></button><h1>Review</h1><div class="spacer"></div><span class="tag" id="review-left">0</span></div>
     <div class="page">
       <div class="study-wrap" id="review-wrap">
         <div class="study-progress" id="review-count">0 tersisa</div>
         <div class="flip" id="rflip"><div class="flip-inner">
           <div class="flip-face flip-front">
-            <button class="speak-btn" id="review-speak-f">🔊</button>
+            <button class="speak-btn" id="review-speak-f"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
             <div class="kanji" id="review-kanji">—</div><div class="flip-hint">Tap atau geser atas untuk jawaban</div>
           </div>
           <div class="flip-face flip-back">
-            <button class="speak-btn" id="review-speak-b">🔊</button>
+            <button class="speak-btn" id="review-speak-b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
             <div class="rd-lbl">Cara Baca</div><div class="reading" id="review-reading">—</div>
             <div class="mn-lbl">Arti</div><div class="meaning" id="review-meaning">—</div>
             <div class="fc-example hidden" id="review-example"></div>
@@ -798,18 +798,18 @@ input,select,textarea{font-family:inherit}
 
   <!-- DECK STUDY (built-in N5/N4) -->
   <section id="screen-deck" class="screen">
-    <div class="topbar"><button class="btn btn-icon btn-ghost" data-nav="dictionary">←</button><h1 id="deck-title">Belajar</h1><div class="spacer"></div><span class="tag" id="deck-counter">0 / 0</span></div>
+    <div class="topbar"><button class="btn btn-icon btn-ghost" data-nav="dictionary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg></button><h1 id="deck-title">Belajar</h1><div class="spacer"></div><span class="tag" id="deck-counter">0 / 0</span></div>
     <div class="page">
       <div class="study-wrap" id="deck-wrap">
         <div class="progress-bar" style="width:100%;max-width:420px"><div class="progress-fill" id="deck-fill"></div></div>
         <div class="study-progress" id="deck-progress-txt">Progress 0%</div>
         <div class="flip" id="dflip"><div class="flip-inner">
           <div class="flip-face flip-front">
-            <button class="speak-btn" id="deck-speak-f">🔊</button>
+            <button class="speak-btn" id="deck-speak-f"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
             <div class="kanji" id="deck-kanji">—</div><div class="flip-hint">Ketuk untuk membalik</div>
           </div>
           <div class="flip-face flip-back">
-            <button class="speak-btn" id="deck-speak-b">🔊</button>
+            <button class="speak-btn" id="deck-speak-b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
             <div class="rd-lbl">Cara Baca</div><div class="reading" id="deck-reading">—</div>
             <div class="mn-lbl">Arti</div><div class="meaning" id="deck-meaning">—</div><div class="flip-hint">Ketuk untuk membalik</div>
           </div>
@@ -830,7 +830,7 @@ input,select,textarea{font-family:inherit}
         <div class="stat p2 nb"><div class="num" id="pg-total">0</div><div class="lbl">📚 Total Kata</div></div>
         <div class="stat p3 nb"><div class="num" id="pg-hafal">0</div><div class="lbl">✅ Hafal</div></div>
         <div class="stat p4 nb"><div class="num" id="pg-pct">0%</div><div class="lbl">📈 Akurasi</div></div>
-        <div class="stat p1 nb"><div class="num" id="pg-fav">0</div><div class="lbl">⭐ Favorit</div></div>
+        <div class="stat p1 nb"><div class="num" id="pg-fav">0</div><div class="lbl"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> Favorit</div></div>
         <div class="stat p2 nb"><div class="num" id="pg-decks">0</div><div class="lbl">🏆 Deck Selesai</div></div>
       </div>
       <div class="section-title">Ringkasan Hafalan</div>
@@ -870,8 +870,8 @@ input,select,textarea{font-family:inherit}
           <div class="lk-reading" id="lk-reading"></div>
           <div class="lk-meaning" id="lk-meaning"></div>
           <div class="lk-actions">
-            <button class="btn btn-ghost" id="lk-fav">⭐ Favorit</button>
-            <button class="btn btn-primary" id="lk-add">➕ Tambah Flashcard</button>
+            <button class="btn btn-ghost" id="lk-fav"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> Favorit</button>
+            <button class="btn btn-primary" id="lk-add"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Tambah Flashcard</button>
           </div>
         </div>
 
@@ -892,7 +892,7 @@ input,select,textarea{font-family:inherit}
         <input type="file" id="avatar-file" accept="image/*" class="hidden" />
         <div class="grow"><div class="t" id="set-name" style="font-weight:900;font-size:18px">Pelajar</div>
         <div class="d" id="set-email" style="color:var(--text-2)">email@contoh.com</div>
-        <button class="btn btn-sm btn-ghost hidden" id="set-avatar-del" style="margin-top:8px">🗑 Hapus Foto</button></div></div>
+        <button class="btn btn-sm btn-ghost hidden" id="set-avatar-del" style="margin-top:8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg> Hapus Foto</button></div></div>
       <div class="section-title">Audio</div>
       <div class="set-item nb">
         <div class="grow"><div class="t">Auto Play Audio</div><div class="d">Putar otomatis saat kartu dibalik</div></div>
@@ -921,12 +921,12 @@ input,select,textarea{font-family:inherit}
 
   <!-- BOTTOM NAV -->
   <nav class="bottom-nav hidden" id="bottom-nav"><div class="nav-inner">
-    <button class="nav-btn" data-nav="dashboard"><span class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg></span><span>Home</span></button>
-    <button class="nav-btn" data-nav="flashcard"><span class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></span><span>Flashcard</span></button>
-    <button class="nav-btn" data-nav="translate"><span class="nav-ic" id="nav-translate-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span><span>Lookup</span></button>
-    <button class="nav-btn" data-nav="dictionary"><span class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-2z"/><path d="M9 3v18"/></svg></span><span>Kamus</span></button>
-    <button class="nav-btn" data-nav="notes"><span class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12l4 4v12H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></span><span>Catatan</span></button>
-    <button class="nav-btn" data-nav="settings"><span class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.3l2-1.5-2-3.4-2.3 1a7 7 0 0 0-2.3-1.3L13.8 2h-4l-.3 2.5a7 7 0 0 0-2.3 1.3l-2.3-1-2 3.4 2 1.5A7 7 0 0 0 5 12a7 7 0 0 0 .1 1.3l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 2.3 1.3l.3 2.5h4l.3-2.5a7 7 0 0 0 2.3-1.3l2.3 1 2-3.4-2-1.5A7 7 0 0 0 19 12z"/></svg></span><span>Setelan</span></button>
+    <button class="nav-btn" data-nav="dashboard"><span class="nav-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span>Home</span></button>
+    <button class="nav-btn" data-nav="flashcard"><span class="nav-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></span><span>Flashcard</span></button>
+    <button class="nav-btn" data-nav="translate"><span class="nav-ic" id="nav-translate-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><span>Lookup</span></button>
+    <button class="nav-btn" data-nav="dictionary"><span class="nav-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span>Kamus</span></button>
+    <button class="nav-btn" data-nav="notes"><span class="nav-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M18.4 2.6a2.17 2.17 0 0 1 3 3L16 11l-4 1 1-4Z"/></svg></span><span>Catatan</span></button>
+    <button class="nav-btn" data-nav="settings"><span class="nav-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg></span><span>Setelan</span></button>
   </div></nav>
 </div>
 
