@@ -345,9 +345,12 @@ input,select,textarea{font-family:inherit}
 [data-theme="dark"] .btn-ghost{background:transparent;border-color:#334155;color:var(--text)}
 [data-theme="dark"] .loader-card{background:#1E293B}
 /* === HARI INI CARD === */
+.sum-ic{display:flex;justify-content:center;align-items:center;margin-bottom:8px}
+.sum-ic.rose{color:var(--primary)}.sum-ic.green{color:var(--accent)}
 .today-card{display:flex;gap:10px;margin-top:14px}
 .today-item{flex:1;background:var(--card);border:1px solid var(--border-soft);border-radius:16px;padding:14px 10px;text-align:center;box-shadow:var(--shadow-xs)}
-.today-item .ti-ic{font-size:20px;line-height:1}
+.today-item .ti-ic{display:flex;justify-content:center;align-items:center;margin-bottom:4px;min-height:26px}
+.today-item .ti-ic.rose{color:var(--primary)}.today-item .ti-ic.muted{color:var(--text-3)}
 .today-item .ti-n{font-size:20px;font-weight:800;color:var(--text);margin-top:6px;line-height:1}
 .today-item .ti-l{font-size:11px;font-weight:600;color:var(--text-2);margin-top:4px}
 [data-theme="dark"] .today-item{background:#1E293B;border-color:#334155}
@@ -547,19 +550,19 @@ input,select,textarea{font-family:inherit}
       <div class="dash-card">
         <div class="dc-title">Ringkasan Hari Ini</div>
         <div class="sum3">
-          <div class="sum-col"><div class="sum-n" id="sum-baru">0</div><div class="sum-l">Kartu Baru</div></div>
-          <div class="sum-col bd"><div class="sum-n" id="sum-review">0</div><div class="sum-l">Review</div></div>
-          <div class="sum-col"><div class="sum-n" id="sum-akurasi">0%</div><div class="sum-l">Akurasi</div></div>
+          <div class="sum-col"><div class="sum-ic rose"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="sum-n" id="sum-baru">0</div><div class="sum-l">Kartu Baru</div></div>
+          <div class="sum-col bd"><div class="sum-ic rose"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></div><div class="sum-n" id="sum-review">0</div><div class="sum-l">Review</div></div>
+          <div class="sum-col"><div class="sum-ic green"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div><div class="sum-n" id="sum-akurasi">0%</div><div class="sum-l">Akurasi</div></div>
         </div>
       </div>
 
-      <button class="btn btn-primary" id="dash-start" style="margin-top:14px">Mulai Belajar</button>
+      <button class="btn btn-primary" id="dash-start" style="margin-top:14px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg> Mulai Belajar</button>
 
       <!-- Hari Ini -->
       <div class="today-card">
-        <div class="today-item"><div class="ti-ic">📚</div><div class="ti-n" id="today-review">0</div><div class="ti-l">Review</div></div>
-        <div class="today-item"><div class="ti-ic">🆕</div><div class="ti-n" id="today-new">0</div><div class="ti-l">Kata Baru</div></div>
-        <div class="today-item"><div class="ti-ic">⏱</div><div class="ti-n" id="today-time">0<span style="font-size:12px"> mnt</span></div><div class="ti-l">Estimasi</div></div>
+        <div class="today-item"><div class="ti-ic rose"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></div><div class="ti-n" id="today-review">0</div><div class="ti-l">Review</div></div>
+        <div class="today-item"><div class="ti-ic rose"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div class="ti-n" id="today-new">0</div><div class="ti-l">Kata Baru</div></div>
+        <div class="today-item"><div class="ti-ic muted"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="ti-n" id="today-time">0<span style="font-size:12px"> mnt</span></div><div class="ti-l">Estimasi</div></div>
       </div>
 
       <!-- Deck Belajar (fitur utama) -->
@@ -923,10 +926,10 @@ input,select,textarea{font-family:inherit}
   <nav class="bottom-nav hidden" id="bottom-nav"><div class="nav-inner">
     <button class="nav-btn" data-nav="dashboard"><span class="nav-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span>Home</span></button>
     <button class="nav-btn" data-nav="flashcard"><span class="nav-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></span><span>Flashcard</span></button>
-    <button class="nav-btn" data-nav="translate"><span class="nav-ic" id="nav-translate-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><span>Lookup</span></button>
-    <button class="nav-btn" data-nav="dictionary"><span class="nav-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span>Kamus</span></button>
-    <button class="nav-btn" data-nav="notes"><span class="nav-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M18.4 2.6a2.17 2.17 0 0 1 3 3L16 11l-4 1 1-4Z"/></svg></span><span>Catatan</span></button>
-    <button class="nav-btn" data-nav="settings"><span class="nav-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg></span><span>Setelan</span></button>
+    <button class="nav-btn" data-nav="translate"><span class="nav-ic" id="nav-translate-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><span>Lookup</span></button>
+    <button class="nav-btn" data-nav="dictionary"><span class="nav-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><span>Kamus</span></button>
+    <button class="nav-btn" data-nav="notes"><span class="nav-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg></span><span>Catatan</span></button>
+    <button class="nav-btn" data-nav="settings"><span class="nav-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></span><span>Setelan</span></button>
   </div></nav>
 </div>
 
