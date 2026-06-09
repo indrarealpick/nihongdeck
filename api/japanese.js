@@ -12,8 +12,8 @@ const openai = new OpenAI({
   maxRetries: 2,
   timeout: 15000,
   defaultHeaders: {
-    'HTTP-Referer': process.env.APP_URL || 'https://nihongflash.vercel.app',
-    'X-Title': 'Nihongo Flash'
+    'HTTP-Referer': process.env.APP_URL || 'https://nihongodeck.vercel.app',
+    'X-Title': 'Nihongo Deck'
   }
 });
 

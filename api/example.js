@@ -45,8 +45,8 @@ where "example_id" is the natural Indonesian translation of the sentence.`;
       headers:{
         'Authorization':`Bearer ${process.env.OPENROUTER_API_KEY}`,
         'Content-Type':'application/json',
-        'HTTP-Referer':'https://nihongflash.vercel.app',
-        'X-Title':'Nihongo Flash Lookup'
+        'HTTP-Referer':'https://nihongodeck.vercel.app',
+        'X-Title':'Nihongo Deck Lookup'
       },
       body:JSON.stringify({
         model:'openai/gpt-4.1',
