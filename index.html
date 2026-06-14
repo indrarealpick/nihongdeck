@@ -140,7 +140,7 @@ input,select,textarea{font-family:inherit}
 .deck-act{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;color:#EA580C;background:#FFF7ED;border-radius:999px;padding:2px 8px;margin-left:8px}
 [data-theme="dark"] .deck-act{background:rgba(234,88,12,.15);color:#FB923C}
 .deck-go{color:var(--text-3);font-size:22px;flex:0 0 auto;font-weight:700}
-[data-theme="dark"] .deck-card{background:#1E293B;border-color:#334155}
+[data-theme="dark"] .deck-card{background:var(--card);border-color:var(--border)}
 [data-theme="dark"] .deck-badge.n5{background:rgba(34,197,94,.18)}
 [data-theme="dark"] .deck-badge.n4{background:rgba(222,122,140,.18)}
 [data-theme="dark"] .deck-badge.n3{background:rgba(139,92,246,.18)}
@@ -151,7 +151,7 @@ input,select,textarea{font-family:inherit}
 .quick-btn:active{transform:scale(.94)}
 .quick-btn .qa-ic{font-size:23px;line-height:1}
 .quick-btn span:last-child{font-size:11px;font-weight:700;color:var(--text-2);text-align:center;line-height:1.2}
-[data-theme="dark"] .quick-btn{background:#1E293B;border-color:#334155}
+[data-theme="dark"] .quick-btn{background:var(--card);border-color:var(--border)}
 
 /* === REVIEW BANNER === */
 .banner{padding:16px 18px;background:var(--card);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:14px;margin-bottom:16px}
@@ -226,6 +226,9 @@ input,select,textarea{font-family:inherit}
 .flip-back .rd-lbl,.flip-back .mn-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3)}
 .flip-back .meaning{font-weight:800;font-size:20px;color:var(--text)}
 .speak-btn{position:absolute;top:14px;right:14px;width:42px;height:42px;border:none;border-radius:12px;background:#F1F5F9;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:none;transition:transform .15s,background .15s;color:var(--primary)}
+.flip-btn{position:absolute;top:14px;left:14px;width:42px;height:42px;border:none;border-radius:12px;background:var(--primary-soft);display:flex;align-items:center;justify-content:center;box-shadow:none;transition:transform .15s,background .15s;color:var(--primary);z-index:3;cursor:pointer}
+.flip-btn:active{transform:scale(.9)}
+[data-theme="dark"] .flip-btn{background:rgba(232,160,175,.18)}
 .speak-btn:hover{background:var(--primary-soft)}
 .speak-btn:active{transform:scale(.9)}
 .study-wrap{display:flex;flex-direction:column;gap:14px;align-items:center}
@@ -317,39 +320,39 @@ input,select,textarea{font-family:inherit}
 
 /* === DARK MODE === */
 [data-theme="dark"]{
-  --bg:#1C1B1F; --card:#2A2830; --surface:#2A2830;
+  --bg:#1C1B1F; --card:#2E2C35; --surface:#2E2C35;
   --text:#FAFAFA; --text-2:#B0B0B5; --text-3:#71717A;
-  --border:#3A3940; --border-soft:#2A2830;
-  --primary:#DE7A8C; --primary-hover:#E892A2; --primary-pressed:#D16A7D; --primary-soft:rgba(222,122,140,.15);
+  --border:#3A3940; --border-soft:#2E2C35;
+  --primary:#E8A0AF; --primary-hover:#F0B5C4; --primary-pressed:#D98A9E; --primary-soft:rgba(232,160,175,.15);
   --secondary:#E892A2;
   --shadow-xs:0 1px 2px rgba(0,0,0,.2);
   --shadow-sm:0 1px 2px rgba(0,0,0,.2),0 8px 24px rgba(0,0,0,.25);
   --shadow-md:0 1px 2px rgba(0,0,0,.2),0 8px 24px rgba(0,0,0,.28);
   --shadow-lg:0 8px 16px rgba(0,0,0,.3),0 16px 40px rgba(0,0,0,.35);
 }
-[data-theme="dark"] .nb{background:#1E293B;border-color:#334155}
-[data-theme="dark"] .topbar{background:rgba(15,23,42,.9);border-bottom-color:#334155}
-[data-theme="dark"] .bottom-nav{background:rgba(42,40,48,.90);border-color:rgba(255,255,255,.06)}
-[data-theme="dark"] .banner{background:#1E293B;border-color:#334155}
-[data-theme="dark"] .dash-card{background:#1E293B;border-color:#334155}
-[data-theme="dark"] .set-item{background:#1E293B;border-color:#334155}
-[data-theme="dark"] .row-card{background:#1E293B;border-color:#334155}
-[data-theme="dark"] .profile-card{background:#1E293B;border-color:#334155}
+[data-theme="dark"] .nb{background:var(--card);border-color:var(--border)}
+[data-theme="dark"] .topbar{background:rgba(28,27,31,.92);border-bottom-color:var(--border)}
+[data-theme="dark"] .bottom-nav{background:rgba(30,27,31,.92);border-color:rgba(255,255,255,.07)}
+[data-theme="dark"] .banner{background:var(--card);border-color:var(--border)}
+[data-theme="dark"] .dash-card{background:var(--card);border-color:var(--border)}
+[data-theme="dark"] .set-item{background:var(--card);border-color:var(--border)}
+[data-theme="dark"] .row-card{background:var(--card);border-color:var(--border)}
+[data-theme="dark"] .profile-card{background:var(--card);border-color:var(--border)}
 [data-theme="dark"] .nav-btn.active .nav-ic{background:rgba(129,140,248,.2)}
-[data-theme="dark"] .progress-bar,[data-theme="dark"] .mini-bar,[data-theme="dark"] .batch-bar{background:#334155}
+[data-theme="dark"] .progress-bar,[data-theme="dark"] .mini-bar,[data-theme="dark"] .batch-bar{background:#3A3940}
 [data-theme="dark"] .overlay{background:rgba(15,23,42,.85)}
-[data-theme="dark"] .modal{background:#1E293B}
+[data-theme="dark"] .modal{background:var(--card)}
 [data-theme="dark"] .modal-back{background:rgba(0,0,0,.6)}
-[data-theme="dark"] .switch .track{background:#475569}
-[data-theme="dark"] .input,[data-theme="dark"] .select,[data-theme="dark"] .textarea{background:#0F172A;border-color:#334155;color:var(--text)}
-[data-theme="dark"] .tag{background:#334155;color:#94A3B8}
+[data-theme="dark"] .switch .track{background:#4A4852}
+[data-theme="dark"] .input,[data-theme="dark"] .select,[data-theme="dark"] .textarea{background:#232127;border-color:var(--border);color:var(--text)}
+[data-theme="dark"] .tag{background:#3A3940;color:#B0B0B5}
 [data-theme="dark"] .tag.n5{background:rgba(34,197,94,.18);color:#4ADE80}
 [data-theme="dark"] .tag.n4{background:rgba(129,140,248,.2);color:#A5B4FC}
 [data-theme="dark"] .tag.n3{background:rgba(192,132,252,.18);color:#C084FC}
-[data-theme="dark"] .flip-face{background:#1E293B}
-[data-theme="dark"] .speak-btn{background:#334155;color:var(--primary)}
-[data-theme="dark"] .btn-ghost{background:transparent;border-color:#334155;color:var(--text)}
-[data-theme="dark"] .loader-card{background:#1E293B}
+[data-theme="dark"] .flip-face{background:var(--card)}
+[data-theme="dark"] .speak-btn{background:#3A3940;color:var(--primary)}
+[data-theme="dark"] .btn-ghost{background:transparent;border-color:var(--border);color:var(--text)}
+[data-theme="dark"] .loader-card{background:var(--card)}
 /* === HARI INI CARD === */
 .sum-ic{display:flex;justify-content:center;align-items:center;margin-bottom:8px}
 .sum-ic.rose{color:var(--primary)}.sum-ic.green{color:var(--accent)}
@@ -359,7 +362,7 @@ input,select,textarea{font-family:inherit}
 .today-item .ti-ic.rose{color:var(--primary)}.today-item .ti-ic.muted{color:var(--text-3)}
 .today-item .ti-n{font-size:20px;font-weight:800;color:var(--text);margin-top:6px;line-height:1}
 .today-item .ti-l{font-size:11px;font-weight:600;color:var(--text-2);margin-top:4px}
-[data-theme="dark"] .today-item{background:#1E293B;border-color:#334155}
+[data-theme="dark"] .today-item{background:var(--card);border-color:var(--border)}
 
 /* === NOTES (manual + foto gallery) === */
 .note-tabs{display:flex;gap:8px;margin-bottom:14px}
@@ -374,7 +377,7 @@ input,select,textarea{font-family:inherit}
 .lightbox{position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;padding:20px;animation:fade .2s ease}
 .lightbox img{max-width:100%;max-height:90vh;border-radius:12px}
 .lightbox .lb-close{position:absolute;top:calc(16px + env(safe-area-inset-top,0px));right:20px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;border:none;font-size:22px;display:flex;align-items:center;justify-content:center}
-[data-theme="dark"] .note-photo-card{background:#1E293B;border-color:#334155}
+[data-theme="dark"] .note-photo-card{background:var(--card);border-color:var(--border)}
 
 /* === DASHBOARD HEADER GLOW (subtle) === */
 #screen-dashboard .page{position:relative}
@@ -425,7 +428,7 @@ input,select,textarea{font-family:inherit}
 .ob-next{flex:1}
 [data-theme="dark"] .ob-badge{background:rgba(222,122,140,.2);color:#F2A0B0}
 [data-theme="dark"] .wlc-chip{background:#27272A;border-color:#3A3940}
-[data-theme="dark"] .ob-dot{background:#334155}
+[data-theme="dark"] .ob-dot{background:#3A3940}
 /* === SWIPE HINTS === */
 .flip-swipe-hints{display:flex;justify-content:space-between;align-items:center;width:100%;position:absolute;bottom:14px;left:0;padding:0 14px;font-size:11px;font-weight:700;opacity:.38;pointer-events:none}
 .study-hints .sh-l,.study-hints .sh-r{display:flex;align-items:center;gap:2px}
@@ -452,6 +455,14 @@ input,select,textarea{font-family:inherit}
 .ss-green{color:var(--accent)}.ss-red{color:var(--danger)}.ss-primary{color:var(--primary)}
 .session-actions{display:flex;gap:12px}
 .session-actions .btn{flex:1}
+
+/* === CARD TRANSITION === */
+@keyframes cardOut{from{opacity:1;transform:translateX(0) scale(1)}to{opacity:0;transform:translateX(-28px) scale(.97)}}
+@keyframes cardOutR{from{opacity:1;transform:translateX(0) scale(1)}to{opacity:0;transform:translateX(28px) scale(.97)}}
+@keyframes cardIn{from{opacity:0;transform:translateX(20px) scale(.97)}to{opacity:1;transform:translateX(0) scale(1)}}
+.flip.card-out{animation:cardOut .16s ease forwards}
+.flip.card-out-r{animation:cardOutR .16s ease forwards}
+.flip.card-in{animation:cardIn .18s ease}
 
 /* === UNDO PILL === */
 .undo-pill{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--nav-h) + var(--safe-b) + 16px);z-index:60;background:var(--text);color:var(--bg);border:none;border-radius:999px;padding:12px 24px;font-weight:700;font-size:15px;cursor:pointer;box-shadow:var(--shadow-md);animation:slideUp .25s ease;white-space:nowrap}
@@ -758,16 +769,17 @@ input,select,textarea{font-family:inherit}
         </div>
         <div class="flip" id="flip"><div class="flip-inner">
           <div class="flip-face flip-front">
+            <button class="flip-btn" id="study-flip-f"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg></button>
             <button class="speak-btn" id="study-speak-f"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
-            <div class="kanji" id="study-kanji">—</div><div class="flip-hint">Ketuk untuk membalik</div>
+            <div class="kanji" id="study-kanji">—</div><div class="flip-hint">Ketuk kartu atau tombol ⟳ untuk membalik</div>
           </div>
           <div class="flip-face flip-back">
+            <button class="flip-btn" id="study-flip-b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg></button>
             <button class="speak-btn" id="study-speak-b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
             <div class="rd-lbl">Cara Baca</div><div class="reading" id="study-reading">—</div>
             <div class="mn-lbl">Arti</div><div class="meaning" id="study-meaning">—</div>
             <div class="fc-example hidden" id="study-example"></div>
             <div class="flip-swipe-hints study-hints"><span class="sh-l">← Belum</span><span class="sh-r">Hafal →</span></div>
-            <div class="flip-hint">Ketuk untuk membalik</div>
           </div>
         </div></div>
         <div class="study-actions"><button class="btn btn-danger" id="study-belum">✗ Belum Hafal</button><button class="btn btn-accent" id="study-hafal">✓ Hafal</button></div>
@@ -785,8 +797,9 @@ input,select,textarea{font-family:inherit}
         <div class="study-progress" id="review-count">0 tersisa</div>
         <div class="flip" id="rflip"><div class="flip-inner">
           <div class="flip-face flip-front">
+            <button class="flip-btn" id="review-flip-f"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg></button>
             <button class="speak-btn" id="review-speak-f"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
-            <div class="kanji" id="review-kanji">—</div><div class="flip-hint">Tap atau geser atas untuk jawaban</div>
+            <div class="kanji" id="review-kanji">—</div><div class="flip-hint">Tap kartu, tombol ⟳, atau geser atas</div>
           </div>
           <div class="flip-face flip-back">
             <button class="speak-btn" id="review-speak-b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
@@ -866,13 +879,15 @@ input,select,textarea{font-family:inherit}
         <div class="study-progress" id="deck-progress-txt">Progress 0%</div>
         <div class="flip" id="dflip"><div class="flip-inner">
           <div class="flip-face flip-front">
+            <button class="flip-btn" id="deck-flip-f"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg></button>
             <button class="speak-btn" id="deck-speak-f"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
-            <div class="kanji" id="deck-kanji">—</div><div class="flip-hint">Ketuk untuk membalik</div>
+            <div class="kanji" id="deck-kanji">—</div><div class="flip-hint">Ketuk kartu atau tombol ⟳ untuk membalik</div>
           </div>
           <div class="flip-face flip-back">
+            <button class="flip-btn" id="deck-flip-b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg></button>
             <button class="speak-btn" id="deck-speak-b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
             <div class="rd-lbl">Cara Baca</div><div class="reading" id="deck-reading">—</div>
-            <div class="mn-lbl">Arti</div><div class="meaning" id="deck-meaning">—</div><div class="flip-hint">Ketuk untuk membalik</div>
+            <div class="mn-lbl">Arti</div><div class="meaning" id="deck-meaning">—</div>
           </div>
         </div></div>
         <div class="study-actions"><button class="btn btn-danger" id="deck-belum">✗ Belum Hafal</button><button class="btn btn-accent" id="deck-hafal">✓ Hafal</button></div>

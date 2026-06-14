@@ -834,6 +834,21 @@ function bindSwipe(el, handlers){
     else if(dy<=-T&&Math.abs(dy)>Math.abs(dx)*1.2){ handlers.onUp&&handlers.onUp(); }
   },{passive:true});
 }
+// Haptic feedback (Android; iOS Safari abaikan diam-diam)
+function haptic(ms=10){ try{ if(navigator.vibrate) navigator.vibrate(ms); }catch(e){} }
+// Animasi transisi kartu: out (kiri/kanan) → render → in
+function cardTransition(flipEl, dir, renderFn){
+  if(!flipEl){ renderFn(); return; }
+  const outClass = dir==='right' ? 'card-out-r' : 'card-out';
+  flipEl.classList.add(outClass);
+  setTimeout(()=>{
+    flipEl.classList.remove(outClass);
+    renderFn();
+    flipEl.classList.add('card-in');
+    setTimeout(()=>flipEl.classList.remove('card-in'),200);
+  },160);
+}
+
 // Undo pill
 let _undoTimer=null;
 function showUndoPill(){
@@ -869,6 +884,7 @@ function renderStudy(){
   $('#study-hafal').style.opacity=f.status==='hafal'?'1':'.65'; $('#study-belum').style.opacity=f.status==='hafal'?'.65':'1';
 }
 function flipStudy(){
+  haptic(6);
   State.study.flipped=!State.study.flipped;
   $('#flip').classList.toggle('flipped',State.study.flipped);
   if(State.study.flipped){
@@ -880,8 +896,13 @@ function studyMove(d){ const n=State.study.list.length; if(!n)return; State.stud
 async function studySetStatus(status){
   const f=State.study.list[State.study.idx]; if(!f)return;
   if(f.status!==status){ f.status=status; await updateFlashcard(f.id,{status}); }
+  haptic(status==='hafal'?12:20);
   toast(status==='hafal'?'Ditandai hafal ✓':'Ditandai belum hafal','success',1200);
-  renderStudy(); setTimeout(()=>studyMove(1),300);
+  const hasNext=State.study.idx<State.study.list.length-1;
+  if(hasNext){
+    State.study.idx++; State.study.flipped=false;
+    cardTransition($('#flip'), status==='hafal'?'right':'left', renderStudy);
+  } else { renderStudy(); }
 }
 
 /* ============================ REVIEW (SRS) ============================ */
@@ -900,6 +921,7 @@ function renderReview(){
   const summary=$('#review-summary');
   if(idx>=list.length||!list.length){
     wrap.classList.add('hidden'); empty.classList.add('hidden');
+    $('#review-left').textContent='0'; $('#review-count').textContent='Selesai';
     if(State.sessionStats.total>0 && summary){ summary.classList.remove('hidden'); showSessionSummary(); return; }
     empty.classList.remove('hidden'); return;
   }
@@ -913,6 +935,7 @@ function renderReview(){
   const exEl=$('#review-example'); if(exEl) exEl.classList.add('hidden');
 }
 function reviewShowAnswer(){
+  haptic(6);
   State.review.shown=true; $('#rflip').classList.add('flipped');
   $('#review-show').classList.add('hidden'); $('#review-grade').classList.remove('hidden');
   const f=State.review.list[State.review.idx];
@@ -937,11 +960,14 @@ async function reviewGrade(grade){
   State.undoStack.prevPatch={review_level:f.review_level||0,next_review_date:f.next_review_date||null,last_reviewed_at:f.last_reviewed_at||null,review_count:f.review_count||0,status:f.status||'belum_hafal'};
   await updateFlashcard(f.id,patch);
   await bumpStreak();
-  State.review.idx++; renderReview();
+  haptic(grade==='sulit'?20:12);
+  State.review.idx++;
+  cardTransition($('#rflip'), grade==='sulit'?'left':'right', renderReview);
   showUndoPill();
 }
 async function undoReview(){
   const u=State.undoStack; if(!u) return;
+  haptic(15);
   State.undoStack=null; hideUndoPill();
   // Reverse session stats
   State.sessionStats.total=Math.max(0,State.sessionStats.total-1);
@@ -963,11 +989,8 @@ function showSessionSummary(){
   $('#ss-sulit').textContent=sulit; $('#ss-pct').textContent=pct+'%';
   $('#ss-emoji').textContent=pct>=80?'🎉':pct>=50?'💪':'📖';
   $('#ss-sub').textContent=pct>=80?'Luar biasa! Pertahankan terus.':pct>=50?'Bagus, terus berlatih!':'Jangan menyerah, terus belajar!';
-  // Retry: review sulit cards again
+  // Retry: mulai ulang review dengan kartu yang masih due
   $('#ss-retry').onclick=()=>{
-    const sulitCards=State.review.list.filter((_,i)=>{ return State.review.list.some((f,j)=>j<i&&f.id===_.id); }).length===0 &&
-      State.sessionStats.sulit>0 ? State.flashcards.filter(f=>f.next_review_date&&f.next_review_date<=todayStr()) : [];
-    // Simpler: just re-start review with any due cards
     $('#review-summary').classList.add('hidden');
     startReview(); renderReview();
   };
@@ -1206,7 +1229,7 @@ function renderDeck(){
   $('#deck-fill').style.width=pct+'%';
   $('#deck-progress-txt').textContent=`${hafal} / ${d.total} hafal · ${pct}%`;
 }
-function deckFlip(){ const d=State.deck; d.flipped=!d.flipped; $('#dflip').classList.toggle('flipped',d.flipped); if(d.flipped&&State.autoplay){const c=d.list[d.idx]; if(c)Speech.speak(c.kanji);} }
+function deckFlip(){ haptic(6); const d=State.deck; d.flipped=!d.flipped; $('#dflip').classList.toggle('flipped',d.flipped); if(d.flipped&&State.autoplay){const c=d.list[d.idx]; if(c)Speech.speak(c.kanji);} }
 function deckMove(dir){ const d=State.deck; const n=d.list.length; if(!n)return; d.idx=(d.idx+dir+n)%n; renderDeck(); }
 function deckShuffle(){ const a=State.deck.list; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } State.deck.idx=0; renderDeck(); toast('Kartu diacak 🔀','success',1100); }
 async function deckSetStatus(status){
@@ -1221,12 +1244,17 @@ async function deckSetStatus(status){
     // keluarkan dari antrian belajar
     d.list.splice(d.idx,1);
     if(d.idx>=d.list.length) d.idx=0;
+    haptic(12);
     toast('Ditandai hafal ✓','success',1000);
-    renderDeck();
+    d.flipped=false;
+    cardTransition($('#dflip'),'right',renderDeck);
   } else {
     // belum hafal → lanjut ke kartu berikutnya, tetap di antrian
+    haptic(20);
     toast('Lanjut…','info',800);
-    deckMove(1);
+    const n=d.list.length; if(!n)return;
+    d.idx=(d.idx+1)%n; d.flipped=false;
+    cardTransition($('#dflip'),'left',renderDeck);
   }
 }
 
@@ -1388,6 +1416,8 @@ function bindEvents(){
 
   $('#flip').onclick=flipStudy;
   $('#study-speak-f').onclick=e=>{e.stopPropagation();const f=State.study.list[State.study.idx];if(f)Speech.speak(f.kanji);};
+  $('#study-flip-f')?.addEventListener('click',e=>{e.stopPropagation();flipStudy();});
+  $('#study-flip-b')?.addEventListener('click',e=>{e.stopPropagation();flipStudy();});
   $('#study-speak-b').onclick=e=>{e.stopPropagation();const f=State.study.list[State.study.idx];if(f)Speech.speak(f.kanji);};
   $('#study-hafal').onclick=e=>{e.stopPropagation();studySetStatus('hafal');};
   $('#study-belum').onclick=e=>{e.stopPropagation();studySetStatus('belum_hafal');};
@@ -1401,6 +1431,7 @@ function bindEvents(){
 
   $('#review-show').onclick=reviewShowAnswer;
   $('#review-speak-f').onclick=e=>{e.stopPropagation();const f=State.review.list[State.review.idx];if(f)Speech.speak(f.kanji);};
+  $('#review-flip-f')?.addEventListener('click',e=>{e.stopPropagation();if(!State.review.shown)reviewShowAnswer();});
   $('#review-speak-b').onclick=e=>{e.stopPropagation();const f=State.review.list[State.review.idx];if(f)Speech.speak(f.kanji);};
   $$('#review-grade [data-grade]').forEach(b=>b.onclick=()=>reviewGrade(b.dataset.grade));
   // Swipe gesture: SRS review (← sulit, → mudah, ↑ normal / show answer)
@@ -1425,6 +1456,8 @@ function bindEvents(){
 
   $('#dflip').onclick=deckFlip;
   $('#deck-speak-f').onclick=e=>{e.stopPropagation();const c=State.deck.list[State.deck.idx];if(c)Speech.speak(c.kanji);};
+  $('#deck-flip-f')?.addEventListener('click',e=>{e.stopPropagation();deckFlip();});
+  $('#deck-flip-b')?.addEventListener('click',e=>{e.stopPropagation();deckFlip();});
   $('#deck-speak-b').onclick=e=>{e.stopPropagation();const c=State.deck.list[State.deck.idx];if(c)Speech.speak(c.kanji);};
   $('#deck-hafal').onclick=e=>{e.stopPropagation();deckSetStatus('hafal');};
   $('#deck-belum').onclick=e=>{e.stopPropagation();deckSetStatus('belum_hafal');};
