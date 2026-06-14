@@ -818,8 +818,12 @@ function renderExample(kanji, elId){
 // Generic swipe: tap, swipeLeft, swipeRight, swipeUp
 function bindSwipe(el, handlers){
   let sx=0,sy=0,dragging=false; const T=55;
-  el.addEventListener('touchstart',e=>{ sx=e.touches[0].clientX; sy=e.touches[0].clientY; dragging=false; },{passive:true});
+  el.addEventListener('touchstart',e=>{
+    if(e.target.closest('button')) return; // abaikan sentuhan di tombol
+    sx=e.touches[0].clientX; sy=e.touches[0].clientY; dragging=false;
+  },{passive:true});
   el.addEventListener('touchmove',e=>{
+    if(e.target.closest('button')) return;
     const dx=e.touches[0].clientX-sx, dy=e.touches[0].clientY-sy;
     if(Math.abs(dx)>16||Math.abs(dy)>16) dragging=true;
     if(Math.abs(dx)>30&&Math.abs(dx)>Math.abs(dy)){ el.classList.toggle('swipe-left',dx<0); el.classList.toggle('swipe-right',dx>0); el.classList.remove('swipe-up'); }
@@ -827,6 +831,7 @@ function bindSwipe(el, handlers){
     else{ el.classList.remove('swipe-left','swipe-right','swipe-up'); }
   },{passive:true});
   el.addEventListener('touchend',e=>{
+    if(e.target.closest('button')) return; // abaikan sentuhan di tombol
     const dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
     el.classList.remove('swipe-left','swipe-right','swipe-up');
     if(!dragging){ handlers.onTap&&handlers.onTap(); return; }
@@ -1414,7 +1419,7 @@ function bindEvents(){
   $('#fc-sort').addEventListener('change',()=>{State.fcLimit=60;renderFlashcards();});
   $('#fc-more').onclick=()=>{State.fcLimit+=60;renderFlashcards();};
 
-  $('#flip').onclick=flipStudy;
+  $('#flip').onclick=e=>{ if(e.target.closest('button')) return; flipStudy(); };
   $('#study-speak-f').onclick=e=>{e.stopPropagation();const f=State.study.list[State.study.idx];if(f)Speech.speak(f.kanji);};
   $('#study-flip-f')?.addEventListener('click',e=>{e.stopPropagation();flipStudy();});
   $('#study-flip-b')?.addEventListener('click',e=>{e.stopPropagation();flipStudy();});
